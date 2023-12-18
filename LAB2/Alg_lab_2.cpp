@@ -6,6 +6,7 @@
 #include <vector>
 #include "brackets.h"
 using namespace std;
+
 bool contains(char elem, vector<char>& line)
 {
     for (int i = 0; i < line.size(); ++i)
@@ -43,7 +44,7 @@ int main()
     bool flagEquals = false;
     for (int i = 0; i < line.length(); i++)
     {
-        if (48 <= line[i] && line[i] <= 57)
+        if ((line[i] >= '0' && line[i] <= '9') || (line[i] == '-' && (i == 0 || line[i - 1] == '(')))
         {
             tempNum += line[i];
         }
@@ -55,7 +56,7 @@ int main()
                 {
                     throw "wrong expression";
                 }
-                if (tempNum.length() == 0 && line[i] != '(' && i == 0)
+                if (tempNum.length() == 0 && line[i] != '(' && i == 0 && line[i] != '-')
                 {
                     throw "wrong operands";
                 }
@@ -77,7 +78,7 @@ int main()
             int n = operands.size() - 1;
             if (line[i] == '*' || line[i] == '/')
             {
-                if (operands.size() == 0 || operands[n] == '(' || operands[n] == '+' || operands[n] == '-')operands.push_back(line[i]);
+                if (operands.size() == 0 || operands[n] == '(' || operands[n] == '+' || operands[n] == '-') operands.push_back(line[i]);
                 else
                 {
                     while (operands[n] == '*' || operands[n] == '/')
@@ -97,7 +98,7 @@ int main()
             }
             else if (line[i] == '+' || line[i] == '-')
             {
-                if (operands.size() == 0)operands.push_back(line[i]);
+                if (operands.size() == 0) operands.push_back(line[i]);
                 else
                 {
                     while (operands[n] == '+' || operands[n] == '-' || operands[n] == '*' || operands[n] == '/')
@@ -158,7 +159,10 @@ int main()
     {
         for (int i = 0; i < rPolishNotation.size(); ++i)
         {
-            if (48 <= rPolishNotation[i][0] && 57 >= rPolishNotation[i][0]) stackNumbers.push_back(stof(rPolishNotation[i]));
+            if ((rPolishNotation[i][0] >= '0' && rPolishNotation[i][0] <= '9') || rPolishNotation[i][0] == '-')
+            {
+                stackNumbers.push_back(stof(rPolishNotation[i]));
+            }
             else
             {
                 float a = stackNumbers[stackNumbers.size() - 1];
